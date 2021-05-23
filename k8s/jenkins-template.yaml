@@ -12,7 +12,6 @@ items:
   kind: PersistentVolume
   metadata:
     name: nfs-direct-pv
-    namespace: buildercicd
   spec:
     storageClassName: nfs-direct
     capacity:
@@ -21,11 +20,12 @@ items:
       - ReadWriteMany
     nfs:
       path: /datos/builder
-      server: 192.168.1.110
+      server: ${MYVAR}
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: nfs-jenkins
+    namespace: buildercicd
   spec:
     storageClassName: nfs-direct
     accessModes:
@@ -60,7 +60,7 @@ items:
           app: jenkins
           env: cicd
       spec:
-      volumes:
+        volumes:
         - name: jenkins-storage
           persistentVolumeClaim:
             claimName: nfs-jenkins
